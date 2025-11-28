@@ -1,0 +1,58 @@
+package ru.practicum.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+import ru.practicum.ViewStatsDto;
+import ru.practicum.model.EndpointHit;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Repository
+public interface StatRepository extends JpaRepository<EndpointHit, Long> {
+
+    @Query("""
+            SELECT new ru.practicum.ViewStatsDto(h.app, h.uri, COUNT(h.id))
+            FROM EndpointHit h
+            WHERE h.timestamp BETWEEN :start AND :end
+            AND h.uri IN :uris
+            GROUP BY h.app, h.uri
+            """)
+    List<ViewStatsDto> findStats(@Param("start") LocalDateTime start,
+                                 @Param("end") LocalDateTime end,
+                                 @Param("uris") List<String> uris);
+
+    @Query("""
+            SELECT new ru.practicum.ViewStatsDto(h.app, h.uri, COUNT(DISTINCT h.ip))
+            FROM EndpointHit h
+            WHERE h.timestamp BETWEEN :start AND :end
+            AND h.uri IN :uris
+            GROUP BY h.app, h.uri
+            """)
+    List<ViewStatsDto> findUniqueStats(@Param("start") LocalDateTime start,
+                                       @Param("end") LocalDateTime end,
+                                       @Param("uris") List<String> uris);
+
+    @Query("""
+            SELECT new ru.practicum.ViewStatsDto(h.app, h.uri, COUNT(h.id))
+            FROM EndpointHit h
+            WHERE h.timestamp BETWEEN :start AND :end
+            GROUP BY h.app, h.uri
+            """)
+    List<ViewStatsDto> findStatsWithoutUris(@Param("start") LocalDateTime start,
+                                            @Param("end") LocalDateTime end);
+
+    @Query("""
+            SELECT new ru.practicum.ViewStatsDto(h.app, h.uri, COUNT(DISTINCT h.ip))
+            FROM EndpointHit h
+            WHERE h.timestamp BETWEEN :start AND :end
+            GROUP BY h.app, h.uri
+            """)
+    List<ViewStatsDto> findUniqueStatsWithoutUris(@Param("start") LocalDateTime start,
+                                                  @Param("end") LocalDateTime end);
+
+    @Query("SELECT new ru.practicum.ViewStatsDto(h.app, h.uri, COUNT(h.ip)) FROM EndpointHit h GROUP BY h.app, h.uri")
+    List<ViewStatsDto> testAll();
+}
