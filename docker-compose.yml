@@ -14,7 +14,7 @@ services:
       interval: 5s
       retries: 10
 
-  stat-server:
+  stats-server:
     build: ./stat/stat-server
     container_name: stat-server
     ports:
@@ -52,5 +52,5 @@ services:
       SPRING_DATASOURCE_PASSWORD: 12345
     depends_on:
       - ewm-db
-      - stat-server
+      - stats-server
 
