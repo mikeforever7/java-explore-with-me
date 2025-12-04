@@ -29,8 +29,8 @@ public class StatController {
 
     @GetMapping(path = "/stats")
     public List<ViewStatsDto> searchStats(
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
+            @RequestParam LocalDateTime start,
+            @RequestParam LocalDateTime end,
             @RequestParam(required = false) List<String> uris,
             @RequestParam(required = false, defaultValue = "false") Boolean unique) {
         log.info("Получен запрос: start={}, end={}, uris={}, unique={}", start, end, uris, unique);

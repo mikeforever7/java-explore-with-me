@@ -1,35 +1,25 @@
 package ru.practicum.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Table(name = "hits")
-public class EndpointHit {
+@Table(name = "categories")
+@AllArgsConstructor
+@NoArgsConstructor
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    String app;
-
-    @Column
-    String uri;
-
-    @Column
-    String ip;
-
-    @Column
-    private LocalDateTime timestamp;
-
+    @Column(length = 50, nullable = false)
+    private String name;
 }
+
