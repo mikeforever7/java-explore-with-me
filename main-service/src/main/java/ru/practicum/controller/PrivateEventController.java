@@ -11,7 +11,6 @@ import ru.practicum.dto.event.*;
 import ru.practicum.dto.request.EventRequestStatusUpdateRequest;
 import ru.practicum.dto.request.EventRequestStatusUpdateResult;
 import ru.practicum.dto.request.ParticipationRequestDto;
-import ru.practicum.dto.user.UserDto;
 import ru.practicum.service.EventService;
 import ru.practicum.service.RequestService;
 
@@ -57,7 +56,8 @@ public class PrivateEventController {
 
     @PatchMapping("/{eventId}/requests")
     public EventRequestStatusUpdateResult patchRequest(@PathVariable Long userId, @PathVariable Long eventId,
-                                                       @RequestBody EventRequestStatusUpdateRequest updateRequest) {
+                                                       @RequestBody(required = false) EventRequestStatusUpdateRequest updateRequest) {
+        log.info("Реквест запрос {}", updateRequest);
         return requestService.changeStatus(userId, eventId, updateRequest);
     }
 }

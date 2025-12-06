@@ -29,6 +29,7 @@ public class EventMapper {
         event.setTitle(newEventDto.getTitle());
         return event;
     }
+
     public static EventFullDto mapToFullDto(Event event) {
         Location location = new Location(event.getLocationLat(), event.getLocationLon());
         return new EventFullDto(event.getId(),
@@ -61,19 +62,11 @@ public class EventMapper {
                 event.getViews());
     }
 
-    public static List<EventShortDto> mapToShortDtoList (List<Event> events) {
+    public static List<EventShortDto> mapToShortDtoList(List<Event> events) {
         return events.stream().map(EventMapper::mapToShortDto).toList();
     }
+
+    public static List<EventFullDto> mapToFullDtoList(List<Event> events) {
+        return events.stream().map(EventMapper::mapToFullDto).toList();
+    }
 }
-//private LocalDateTime createdOn;
-//private CategoryDto category;
-//private String description;
-//private LocalDateTime eventDate;
-//private Location location;
-//private boolean paid;
-//private int participantLimit;
-//private LocalDateTime publishedOn;
-//private boolean requestModeration;
-//private EventState eventState;
-//private String title;
-//private Integer views;

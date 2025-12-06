@@ -18,6 +18,7 @@ public class RequestMapper {
                 request.getStatus()
         );
     }
+
     public static List<ParticipationRequestDto> mapToDtoList(List<Request> requestList) {
         return requestList.stream().map(RequestMapper::mapToDto).toList();
     }

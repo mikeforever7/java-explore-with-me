@@ -27,7 +27,7 @@ public final class UserMapper {
         return new UserShortDto(user.getId(), user.getName());
     }
 
-    public static List<UserDto> mapToDtoList(List<User> users){
+    public static List<UserDto> mapToDtoList(List<User> users) {
         return users.stream().map(UserMapper::mapToUserDto).toList();
     }
 }

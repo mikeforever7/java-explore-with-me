@@ -1,10 +1,7 @@
 package ru.practicum.dto.event;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,6 +35,7 @@ public class NewEventDto {
 
     private boolean paid = false;
 
+    @PositiveOrZero
     private int participantLimit = 0;
 
     private boolean requestModeration = true;

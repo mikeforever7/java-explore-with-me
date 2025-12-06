@@ -13,7 +13,8 @@ import java.util.List;
 
 @Service
 public class StatClient {
-    private final String baseUrl = "http://localhost:9090";
+    private final String baseUrl = "http://stat-server:9090";
+    //    private final String baseUrl = "http://localhost:9090";
     private final RestClient restClient;
 
     public StatClient(RestClient restClient) {

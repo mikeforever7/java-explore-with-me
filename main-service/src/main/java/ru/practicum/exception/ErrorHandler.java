@@ -66,6 +66,7 @@ public class ErrorHandler {
                         "For the requested operation the conditions are not met.",
                         e.getMessage()));
     }
+
     @ExceptionHandler
     public ResponseEntity<Object> handleEventNotPublishedException(final EventNotPublishedException e) {
         return ResponseEntity
@@ -109,9 +110,9 @@ public class ErrorHandler {
     public ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ApiError(
-                "BAD_REQUEST",
-                "Incorrectly made request.",
-                "Parameter '" + e.getParameterName() + "' is required but was not provided."));
+                        "BAD_REQUEST",
+                        "Incorrectly made request.",
+                        "Parameter '" + e.getParameterName() + "' is required but was not provided."));
     }
 
 

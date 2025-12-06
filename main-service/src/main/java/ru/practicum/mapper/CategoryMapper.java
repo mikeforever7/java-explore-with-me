@@ -17,7 +17,7 @@ public class CategoryMapper {
         return category;
     }
 
-    public static List<CategoryDto> mapToDtoList(List<Category> categories){
+    public static List<CategoryDto> mapToDtoList(List<Category> categories) {
         return categories.stream().map(CategoryMapper::mapToCategoryDto).toList();
     }
 }

@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.practicum.dto.Location;
-import ru.practicum.dto.category.CategoryDto;
-import ru.practicum.dto.user.UserShortDto;
 import ru.practicum.enums.AdminStateAction;
 
 import java.time.LocalDateTime;
