@@ -1,7 +1,6 @@
 package ru.practicum.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.ValidationException;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
@@ -34,9 +33,6 @@ public class PublicEventController {
             @RequestParam(required = false) EventSortBy sort,
             @RequestParam(required = false) String text,
             HttpServletRequest request) {
-        if (categories != null && categories.stream().anyMatch(category -> category <= 0)) {
-            throw new ValidationException("Все категории должны быть положительными числами");
-        }
         return eventService.searchAvailableItemByText(from, size, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, text, request);
     }
 

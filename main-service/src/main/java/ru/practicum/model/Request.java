@@ -27,10 +27,12 @@ public class Request {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")
+    @ToString.Exclude
     private Event event;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "requester_id")
+    @ToString.Exclude
     private User requester;
 
     private RequestStatus status;

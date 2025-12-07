@@ -251,6 +251,9 @@ public class EventServiceImpl implements EventService {
     public List<EventShortDto> searchAvailableItemByText(
             Integer from, Integer size, List<Long> categories, Boolean paid, LocalDateTime rangeStart,
             LocalDateTime rangeEnd, Boolean onlyAvailable, EventSortBy sort, String text, HttpServletRequest request) {
+        if (categories != null && categories.stream().anyMatch(category -> category <= 0)) {
+            throw new ValidationException("Все категории должны быть положительными числами");
+        }
         BooleanBuilder predicate = new BooleanBuilder();
         predicate.and(QEvent.event.eventState.eq(EventState.PUBLISHED));
         if (StringUtils.hasText(text)) {

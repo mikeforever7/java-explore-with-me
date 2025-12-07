@@ -25,6 +25,7 @@ public class Event {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
+    @ToString.Exclude
     private Category category;
 
     private Integer confirmedRequests = 0;
@@ -41,6 +42,7 @@ public class Event {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "initiator_id", nullable = false)
+    @ToString.Exclude
     private User initiator;
 
     @Column(nullable = false)
