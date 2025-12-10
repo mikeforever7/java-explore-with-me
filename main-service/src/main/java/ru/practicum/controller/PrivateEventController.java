@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.dto.comment.CommentDto;
+import ru.practicum.dto.comment.NewCommentDto;
 import ru.practicum.dto.event.*;
 import ru.practicum.dto.request.EventRequestStatusUpdateRequest;
 import ru.practicum.dto.request.EventRequestStatusUpdateResult;
@@ -59,5 +61,23 @@ public class PrivateEventController {
                                                        @RequestBody(required = false) EventRequestStatusUpdateRequest updateRequest) {
         log.info("Реквест запрос {}", updateRequest);
         return requestService.changeStatus(userId, eventId, updateRequest);
+    }
+
+    @PostMapping("/{eventId}/comments")
+    @ResponseStatus(HttpStatus.CREATED)
+    public CommentDto postComment(@PathVariable Long userId, @PathVariable Long eventId, @RequestBody NewCommentDto newCommentDto) {
+        return eventService.addComment(userId, eventId, newCommentDto);
+    }
+
+    @PatchMapping("/{eventId}/comments/{commentId}")
+    public CommentDto patchComment(@PathVariable Long userId, @PathVariable Long eventId,
+                                   @RequestBody NewCommentDto newCommentDto, @PathVariable Long commentId) {
+        return eventService.updateComment(userId, eventId, newCommentDto, commentId);
+    }
+
+    @DeleteMapping("/{eventId}/comments/{commentId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteComment(@PathVariable Long userId, @PathVariable Long eventId, @PathVariable Long commentId) {
+        eventService.deleteComment(userId, eventId, commentId);
     }
 }

@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import ru.practicum.EndpointHitDto;
 import ru.practicum.StatClient;
+import ru.practicum.dto.comment.CommentDto;
+import ru.practicum.dto.comment.NewCommentDto;
 import ru.practicum.dto.event.*;
 import ru.practicum.enums.AdminStateAction;
 import ru.practicum.enums.EventSortBy;
@@ -21,12 +23,11 @@ import ru.practicum.enums.UserStateAction;
 import ru.practicum.exception.EventDateTooSoonException;
 import ru.practicum.exception.EventStateException;
 import ru.practicum.exception.NotFoundException;
+import ru.practicum.mapper.CommentMapper;
 import ru.practicum.mapper.EventMapper;
-import ru.practicum.model.Category;
-import ru.practicum.model.Event;
-import ru.practicum.model.QEvent;
-import ru.practicum.model.User;
+import ru.practicum.model.*;
 import ru.practicum.repository.CategoryRepository;
+import ru.practicum.repository.CommentRepository;
 import ru.practicum.repository.EventRepository;
 import ru.practicum.repository.UserRepository;
 
@@ -41,6 +42,7 @@ public class EventServiceImpl implements EventService {
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final StatClient statClient;
+    private final CommentRepository commentRepository;
 
     @Override
     public EventFullDto getEvent(Long userId, Long eventId) {
@@ -315,5 +317,39 @@ public class EventServiceImpl implements EventService {
         List<Event> events = eventRepository.findAll(predicate, pageable).getContent();
 
         return EventMapper.mapToFullDtoList(events);
+    }
+
+    @Override
+    public CommentDto addComment(Long userId, Long eventId, NewCommentDto newCommentDto) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new NotFoundException("События с id=" + eventId + "не найдено"));
+        User author = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Пользователь с id = " + userId + " не найден"));
+        return CommentMapper.mapToDto(commentRepository.save(CommentMapper.mapToComment(newCommentDto, event, author)));
+    }
+
+    @Override
+    public CommentDto updateComment(Long userId, Long eventId, NewCommentDto commentDto, Long commentId) {
+        Comment comment = commentRepository.findByIdAndAuthorIdAndEventId(commentId, userId, eventId)
+                .orElseThrow(() -> new NotFoundException("Юзер с id=" + userId + " не оставлял комментарий с id="
+                        + commentId + " к событию с id=" + eventId));
+        if (StringUtils.hasText(commentDto.getText())) {
+            comment.setText(commentDto.getText());
+        }
+        return CommentMapper.mapToDto(commentRepository.save(comment));
+    }
+
+    @Override
+    public void deleteComment(Long userId, Long eventId, Long commentId) {
+        Comment comment = commentRepository.findByIdAndAuthorIdAndEventId(commentId, userId, eventId)
+                .orElseThrow(() -> new NotFoundException("Юзер с id=" + userId + " не оставлял комментарий с id="
+                        + commentId + " к событию с id=" + eventId));
+        commentRepository.delete(comment);
+    }
+
+    @Override
+    public List<CommentDto> getAllEventComments(Long id) {
+        List<Comment> comments = commentRepository.findAllByEventId(id);
+        return CommentMapper.mapToDtoList(comments);
     }
 }
