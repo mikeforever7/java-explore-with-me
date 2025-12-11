@@ -6,6 +6,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.dto.comment.CommentDto;
 import ru.practicum.dto.event.EventFullDto;
 import ru.practicum.dto.event.EventShortDto;
 import ru.practicum.enums.EventSortBy;
@@ -39,6 +40,11 @@ public class PublicEventController {
     @GetMapping("/{id}")
     public EventFullDto getEventById(@PathVariable Long id, HttpServletRequest request) {
         return eventService.findEventById(id, request);
+    }
+
+    @GetMapping("/{id}/comments")
+    public List<CommentDto> getAllEventComments(@PathVariable Long id) {
+        return eventService.getAllEventComments(id);
     }
 
 }

@@ -1,6 +1,8 @@
 package ru.practicum.service;
 
 import jakarta.servlet.http.HttpServletRequest;
+import ru.practicum.dto.comment.CommentDto;
+import ru.practicum.dto.comment.NewCommentDto;
 import ru.practicum.dto.event.*;
 import ru.practicum.enums.EventSortBy;
 import ru.practicum.enums.EventState;
@@ -28,4 +30,12 @@ public interface EventService {
     EventFullDto patchEvent(Long eventId, UpdateEventAdminRequest eventForUpdate);
 
     EventFullDto patchEventByUser(Long userId, Long eventId, UpdateEventUserRequest eventForUpdate);
+
+    CommentDto addComment(Long userId, Long eventId, NewCommentDto newCommentDto);
+
+    CommentDto updateComment(Long userId, Long eventId, NewCommentDto newCommentDto, Long commentId);
+
+    void deleteComment(Long userId, Long eventId, Long commentId);
+
+    List<CommentDto> getAllEventComments(Long id);
 }

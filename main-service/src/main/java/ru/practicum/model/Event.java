@@ -8,6 +8,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import ru.practicum.enums.EventState;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Setter
 @Getter
@@ -67,4 +69,8 @@ public class Event {
     private String title;
 
     private Integer views = 0;
+
+    @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<Comment> comments = new ArrayList<>();
 }
